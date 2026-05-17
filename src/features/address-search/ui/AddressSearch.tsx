@@ -26,6 +26,8 @@ export function AddressSearch() {
   }, [])
 
   useEffect(() => {
+    if (!open) return
+    if (q === pointALabel) return
     let cancelled = false
     const run = async () => {
       if (q.trim().length < 2) {
@@ -45,11 +47,13 @@ export function AddressSearch() {
       cancelled = true
       window.clearTimeout(t)
     }
-  }, [q])
+  }, [q, open, pointALabel])
 
   const pick = useCallback(
     (hit: NominatimHit) => {
       setPointA(hitToLatLng(hit), hit.display_name)
+      setQ(hit.display_name)
+      setHits([])
       setOpen(false)
       setError(null)
     },
@@ -66,7 +70,9 @@ export function AddressSearch() {
           setQ(e.target.value)
           setOpen(true)
         }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => {
+          if (q && q !== pointALabel) setOpen(true)
+        }}
         autoComplete="off"
       />
       {open && (hits.length > 0 || loading) ? (
