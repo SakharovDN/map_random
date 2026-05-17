@@ -2,10 +2,13 @@ import { AddressSearch } from '@/features/address-search/ui/AddressSearch'
 import { GeolocationButton } from '@/features/geolocation/ui/GeolocationButton'
 import { RouteControls } from '@/features/random-walk-route/ui/RouteControls'
 import { useWalkSession } from '@/entities/walk-session'
+import { Button } from '@/shared/ui/Button'
 import { MapWidget } from './MapWidget'
 
 export function MapShell() {
   const error = useWalkSession((s) => s.error)
+  const pointA = useWalkSession((s) => s.pointA)
+  const resetAll = useWalkSession((s) => s.resetAll)
 
   return (
     <div className="flex h-screen flex-col md:flex-row">
@@ -21,6 +24,11 @@ export function MapShell() {
         <AddressSearch />
         <GeolocationButton />
         <RouteControls />
+        {pointA ? (
+          <Button variant="ghost" onClick={resetAll}>
+            Очистить
+          </Button>
+        ) : null}
         {error ? (
           <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/60 dark:text-red-200">
             {error}

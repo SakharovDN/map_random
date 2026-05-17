@@ -6,11 +6,16 @@ import { Input } from '@/shared/ui/Input'
 export function AddressSearch() {
   const setPointA = useWalkSession((s) => s.setPointA)
   const setError = useWalkSession((s) => s.setError)
-  const [q, setQ] = useState('')
+  const pointALabel = useWalkSession((s) => s.pointALabel)
+  const [q, setQ] = useState(pointALabel ?? '')
   const [open, setOpen] = useState(false)
   const [hits, setHits] = useState<NominatimHit[]>([])
   const [loading, setLoading] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setQ(pointALabel ?? '')
+  }, [pointALabel])
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -44,8 +49,7 @@ export function AddressSearch() {
 
   const pick = useCallback(
     (hit: NominatimHit) => {
-      setPointA(hitToLatLng(hit))
-      setQ(hit.display_name)
+      setPointA(hitToLatLng(hit), hit.display_name)
       setOpen(false)
       setError(null)
     },

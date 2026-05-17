@@ -28,7 +28,7 @@ export function MapWidget() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapRecenter point={pointA} fallback={DEFAULT_CENTER} />
+      <MapRecenter point={pointA} polyline={polyline} fallback={DEFAULT_CENTER} />
       <PickStartOnMap />
       {pointA ? <Marker position={[pointA.lat, pointA.lng]} /> : null}
       {pointB ? <Marker position={[pointB.lat, pointB.lng]} /> : null}
